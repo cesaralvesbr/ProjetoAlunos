@@ -3,6 +3,7 @@ using AlunosApi.ViewModels;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -64,6 +65,24 @@ namespace AlunosApi.Controllers
             else
             {
                 ModelState.AddModelError("LoginUser", $"Falha ao logar ao Usuário {userInfo.Email}. login inválido");
+                return BadRequest(ModelState);
+            }
+
+        }
+
+
+        [HttpPost("GetUsers")]
+        public async Task<ActionResult<List<IdentityUser>>> GetUsers()
+        {
+            var result = await _authentication.GetUsers();
+
+            if (result.Count > 0)
+            {
+                return result;
+            }
+            else
+            {
+                ModelState.AddModelError("GetUsers", $"Falha ao retorna lista de usuários cadastrados");
                 return BadRequest(ModelState);
             }
 

@@ -42,6 +42,14 @@ namespace AlunosApi.Services
 
             return result.Succeeded;
         }
+
+        public async Task<List<IdentityUser>> GetUsers()
+        {
+            List<IdentityUser> usersList =  _userInManager.Users.ToList();
+
+            return usersList;
+        }
+
         public async Task Logout()
         {
             await _signInManager.SignOutAsync();
